@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://aweijx.github.io">
-  <title>Hello World | aweijx</title>
+  <title>物联网实战（1） | aweijx</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="#物联网实战（BLE通信） 最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。 ##关于BLE BLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://aweijx.github.io/2020/04/16/hello-world/index.html">
+<meta property="og:title" content="物联网实战（1）">
+<meta property="og:url" content="https://aweijx.github.io/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="aweijx">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="#物联网实战（BLE通信） 最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。 ##关于BLE BLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-16T04:25:17.383Z">
-<meta property="article:modified_time" content="2020-04-16T04:25:17.383Z">
+<meta property="article:published_time" content="2020-04-18T11:42:39.000Z">
+<meta property="article:modified_time" content="2020-04-18T11:45:33.140Z">
 <meta property="article:author" content="aweijx">
+<meta property="article:tag" content="lot">
+<meta property="article:tag" content="BLE">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="aweijx" type="application/atom+xml">
@@ -192,14 +194,14 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-world" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-物联网实战（1）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
   
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      物联网实战（1）
     </h1>
   
 
@@ -211,8 +213,8 @@
               <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
         </span>
 
-<a href="/2020/04/16/hello-world/" class="archive-article-date">
-        <time datetime="2020-04-16T04:25:17.383Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-16</time>
+<a href="/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/" class="archive-article-date">
+        <time datetime="2020-04-18T11:42:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-18</time>
 </a>
 
   
@@ -225,7 +227,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">73字</span>
+      <span class="post-count">207字</span>
     </span>
   </span>
 
@@ -245,19 +247,11 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+    <p>#物联网实战（BLE通信）</p>
+<p>最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。</p>
+<p>##关于BLE</p>
+<p>BLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于经典蓝牙，BLE主要是省电，低功耗意味着在lot领域有更好的前景。</p>
+<p>BLE通信一般分为广播/扫描两个步骤。<strong>外设</strong>负责主动发起广播，<strong>中心设备</strong>用来扫描设备。</p>
 
     
 
@@ -272,7 +266,7 @@
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="https://aweijx.github.io/2020/04/16/hello-world/" title="Hello World" target="_blank">https://aweijx.github.io/2020/04/16/hello-world/</a>
+          <a href="https://aweijx.github.io/2020/04/18/物联网实战（1）/" title="物联网实战（1）" target="_blank">https://aweijx.github.io/2020/04/18/物联网实战（1）/</a>
         </li>
         
         <li>
@@ -289,6 +283,21 @@
   <div class="article-info article-info-index">
     
     
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">lot</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BLE</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
     
 
     
@@ -339,7 +348,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://aweijx.github.io/2020/04/16/hello-world/" alt="微信分享二维码"> -->
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://aweijx.github.io/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/" alt="微信分享二维码"> -->
     </div>
 </div>
 
@@ -354,15 +363,11 @@
 
 <nav id="article-nav">
   
-    <a href="/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          物联网实战（1）
-        
-      </div>
-    </a>
   
+    <a href="/2020/04/16/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
