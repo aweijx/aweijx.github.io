@@ -51,6 +51,10 @@
   
 
 </head>
+<!-- 代码块复制功能 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.js"></script>
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/clipboard_use.js"></script>
 
 <body>
   <div id="container" q-class="show:isCtnShow">
@@ -195,6 +199,104 @@
             
 
   
+    <article id="post-hexo博客问题解决（长期更新）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2020/04/20/hexo%E5%8D%9A%E5%AE%A2%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%EF%BC%88%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89/" target="_blank">hexo博客问题解决（长期更新）</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2020/04/20/hexo%E5%8D%9A%E5%AE%A2%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%EF%BC%88%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89/" class="archive-article-date">
+        <time datetime="2020-04-20T03:51:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2 id="1-hexo博客添加本地图片"><a href="#1-hexo博客添加本地图片" class="headerlink" title="1.hexo博客添加本地图片"></a>1.hexo博客添加本地图片</h2><p>昨天上传的博客中添加了本地图片，但在网站上加载不出来，发现hexo有个插件<strong>hexo-asset-image</strong>支持添加本地图片。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https:&#x2F;&#x2F;github.com&#x2F;CodeFalling&#x2F;hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<p>接着打开你的博客目录/node_modules/hexo-asset-image/index.js，更换为下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&#39;use strict&#39;;</span><br><span class="line">var cheerio &#x3D; require(&#39;cheerio&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;14480345&#x2F;how-to-get-the-nth-occurrence-in-a-string</span><br><span class="line">function getPosition(str, m, i) &#123;</span><br><span class="line">  return str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var version &#x3D; String(hexo.version).split(&#39;.&#39;);</span><br><span class="line">hexo.extend.filter.register(&#39;after_post_render&#39;, function(data)&#123;</span><br><span class="line">  var config &#x3D; hexo.config;</span><br><span class="line">  if(config.post_asset_folder)&#123;</span><br><span class="line">    	var link &#x3D; data.permalink;</span><br><span class="line">	if(version.length &gt; 0 &amp;&amp; Number(version[0]) &#x3D;&#x3D; 3)</span><br><span class="line">	   var beginPos &#x3D; getPosition(link, &#39;&#x2F;&#39;, 1) + 1;</span><br><span class="line">	else</span><br><span class="line">	   var beginPos &#x3D; getPosition(link, &#39;&#x2F;&#39;, 3) + 1;</span><br><span class="line">	&#x2F;&#x2F; In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;...&#x2F;about&#x2F;index.html&quot;.</span><br><span class="line">	var endPos &#x3D; link.lastIndexOf(&#39;&#x2F;&#39;) + 1;</span><br><span class="line">    link &#x3D; link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    var toprocess &#x3D; [&#39;excerpt&#39;, &#39;more&#39;, &#39;content&#39;];</span><br><span class="line">    for(var i &#x3D; 0; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      var key &#x3D; toprocess[i];</span><br><span class="line"> </span><br><span class="line">      var $ &#x3D; cheerio.load(data[key], &#123;</span><br><span class="line">        ignoreWhitespace: false,</span><br><span class="line">        xmlMode: false,</span><br><span class="line">        lowerCaseTags: false,</span><br><span class="line">        decodeEntities: false</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(&#39;img&#39;).each(function()&#123;</span><br><span class="line">		if ($(this).attr(&#39;src&#39;))&#123;</span><br><span class="line">			&#x2F;&#x2F; For windows style path, we replace &#39;\&#39; to &#39;&#x2F;&#39;.</span><br><span class="line">			var src &#x3D; $(this).attr(&#39;src&#39;).replace(&#39;\\&#39;, &#39;&#x2F;&#39;);</span><br><span class="line">			if(!&#x2F;http[s]*.*|\&#x2F;\&#x2F;.*&#x2F;.test(src) &amp;&amp;</span><br><span class="line">			   !&#x2F;^\s*\&#x2F;&#x2F;.test(src)) &#123;</span><br><span class="line">			  &#x2F;&#x2F; For &quot;about&quot; page, the first part of &quot;src&quot; can&#39;t be removed.</span><br><span class="line">			  &#x2F;&#x2F; In addition, to support multi-level local directory.</span><br><span class="line">			  var linkArray &#x3D; link.split(&#39;&#x2F;&#39;).filter(function(elem)&#123;</span><br><span class="line">				return elem !&#x3D; &#39;&#39;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  var srcArray &#x3D; src.split(&#39;&#x2F;&#39;).filter(function(elem)&#123;</span><br><span class="line">				return elem !&#x3D; &#39;&#39; &amp;&amp; elem !&#x3D; &#39;.&#39;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  if(srcArray.length &gt; 1)</span><br><span class="line">				srcArray.shift();</span><br><span class="line">			  src &#x3D; srcArray.join(&#39;&#x2F;&#39;);</span><br><span class="line">			  $(this).attr(&#39;src&#39;, config.root + link + src);</span><br><span class="line">			  console.info&amp;&amp;console.info(&quot;update link as:--&gt;&quot;+config.root + link + src);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			console.info&amp;&amp;console.info(&quot;no src attr, skipped...&quot;);</span><br><span class="line">			console.info&amp;&amp;console.info($(this));</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] &#x3D; $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>再打开博客目录下的配置文件_config.yml，把post_asset_folder修改为true。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
+
+<p>接下来可以通过相对路径来添加图片。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![alt](test.jpg)</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考文章</strong>：<a href="https://blog.csdn.net/xjm850552586/article/details/84101345?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1&utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1" target="_blank" rel="noopener">hexo引用本地图片无法显示</a>，<a href="https://blog.csdn.net/weixin_34348805/article/details/91389277?depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-7&utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-7" target="_blank" rel="noopener">在Hexo博客中插入图片</a></p>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">环境配置</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2020/04/20/hexo%E5%8D%9A%E5%AE%A2%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%EF%BC%88%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Android-Studio超详细安排配置教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -227,8 +329,6 @@
     <h1 id="Android-Studio初次安装配置"><a href="#Android-Studio初次安装配置" class="headerlink" title="Android Studio初次安装配置"></a>Android Studio初次安装配置</h1><h2 id="1-下载安装包"><a href="#1-下载安装包" class="headerlink" title="1.下载安装包"></a>1.下载安装包</h2><p>第一步当然是下载Android studio安装包，从<a href="http://www.android-studio.org/" target="_blank" rel="noopener">官网</a>下载最新版本。</p>
 <p><img src="/2020/04/20/Android-Studio%E8%B6%85%E8%AF%A6%E7%BB%86%E5%AE%89%E6%8E%92%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/Android_studio.PNG" alt="Android_studio"></p>
 <p>我这里选择是win64 3.5.2版本。</p>
-    
-    <a class="article-more-a" href="/2020/04/20/Android-Studio%E8%B6%85%E8%AF%A6%E7%BB%86%E5%AE%89%E6%8E%92%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/#more">more >></a>
     
     
 
