@@ -6,23 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://aweijx.github.io">
-  <title>物联网实战（1） | aweijx</title>
+  <title>树莓派蓝牙与手机通信 | aweijx</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="物联网实战（BLE通信）最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。 关于BLEBLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于经典蓝牙，">
+  <meta name="description" content="纠结了好几天，今天终于能静下心来完成这个蓝牙通信测试，中间是遇到了不少坑，结果csdn、简书等等大多不能解决，最后一看英文论坛对待问题一阵见血，立马解决，这里也是想记录下来下次不再走弯路，后面再看看能否实现单个蓝牙多用户连接。 硬件需求树莓派3b+（自带蓝牙4.2模块） 支持ble的安卓手机 测试1.安装pybluez pybluez依赖linux下的软件协议栈bluez以及库文件libbluet">
 <meta property="og:type" content="article">
-<meta property="og:title" content="物联网实战（1）">
-<meta property="og:url" content="https://aweijx.github.io/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:title" content="树莓派蓝牙与手机通信">
+<meta property="og:url" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/index.html">
 <meta property="og:site_name" content="aweijx">
-<meta property="og:description" content="物联网实战（BLE通信）最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。 关于BLEBLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于经典蓝牙，">
+<meta property="og:description" content="纠结了好几天，今天终于能静下心来完成这个蓝牙通信测试，中间是遇到了不少坑，结果csdn、简书等等大多不能解决，最后一看英文论坛对待问题一阵见血，立马解决，这里也是想记录下来下次不再走弯路，后面再看看能否实现单个蓝牙多用户连接。 硬件需求树莓派3b+（自带蓝牙4.2模块） 支持ble的安卓手机 测试1.安装pybluez pybluez依赖linux下的软件协议栈bluez以及库文件libbluet">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-18T11:42:39.000Z">
-<meta property="article:modified_time" content="2020-04-20T03:45:37.845Z">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth2.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth3.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth4.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth5.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth6.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth7.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth8.PNG">
+<meta property="og:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth1.PNG">
+<meta property="article:published_time" content="2020-04-20T08:55:56.000Z">
+<meta property="article:modified_time" content="2020-04-20T09:44:54.880Z">
 <meta property="article:author" content="aweijx">
 <meta property="article:tag" content="lot">
-<meta property="article:tag" content="BLE">
+<meta property="article:tag" content="树莓派">
+<meta property="article:tag" content="物联网">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth2.PNG">
   
     <link rel="alternative" href="/atom.xml" title="aweijx" type="application/atom+xml">
   
@@ -198,14 +208,14 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-物联网实战（1）" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-树莓派蓝牙与手机通信" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
   
   
     <h1 class="article-title" itemprop="name">
-      物联网实战（1）
+      树莓派蓝牙与手机通信
     </h1>
   
 
@@ -217,8 +227,8 @@
               <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
         </span>
 
-<a href="/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/" class="archive-article-date">
-        <time datetime="2020-04-18T11:42:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-18</time>
+<a href="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/" class="archive-article-date">
+        <time datetime="2020-04-20T08:55:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-20</time>
 </a>
 
   
@@ -231,7 +241,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">206字</span>
+      <span class="post-count">669字</span>
     </span>
   </span>
 
@@ -240,7 +250,7 @@
     <span class="post-meta-item-icon">
       <i class="icon-book icon"></i>
       <span class="post-meta-item-text"> 阅读时长≈</span>
-      <span class="post-count">1分</span>
+      <span class="post-count">2分</span>
     </span>
   </span>
 </div>
@@ -251,9 +261,60 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="物联网实战（BLE通信）"><a href="#物联网实战（BLE通信）" class="headerlink" title="物联网实战（BLE通信）"></a>物联网实战（BLE通信）</h1><p>最近接了个物联网项目，需要实现手机蓝牙控制电梯，说实话硬件方面STM32之类的有学过但已经忘得一干二净了，也没有实际开发经验，这个项目不知道我能不能坚持下去，就当学习学习物联网开发吧。手边只有一块树莓派3b+，准备就从树莓派入手实现一个蓝牙通信小demo，加油吧。</p>
-<h2 id="关于BLE"><a href="#关于BLE" class="headerlink" title="关于BLE"></a>关于BLE</h2><p>BLE（Bluetooth Low Energy）即低功耗蓝牙，蓝牙4.0以上支持，相较于经典蓝牙，BLE主要是省电，低功耗意味着在lot领域有更好的前景。</p>
-<p>BLE通信一般分为广播/扫描两个步骤。<strong>外设</strong>负责主动发起广播，<strong>中心设备</strong>用来扫描设备。</p>
+    <p>纠结了好几天，今天终于能静下心来完成这个蓝牙通信测试，中间是遇到了不少坑，结果csdn、简书等等大多不能解决，最后一看英文论坛对待问题一阵见血，立马解决，这里也是想记录下来下次不再走弯路，后面再看看能否实现单个蓝牙多用户连接。</p>
+<h2 id="硬件需求"><a href="#硬件需求" class="headerlink" title="硬件需求"></a>硬件需求</h2><p><strong>树莓派3b+（自带蓝牙4.2模块）</strong></p>
+<p><strong>支持ble的安卓手机</strong></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><strong>1.安装pybluez</strong></p>
+<p>pybluez依赖linux下的软件协议栈bluez以及库文件libbluetooth-dev。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install bluez</span><br><span class="line">sudo apt-get install libbluetooth-dev</span><br><span class="line">sudo pip3 install pybluez</span><br></pre></td></tr></table></figure>
+
+<p>如果是python2，上面pip3改为pip即可。</p>
+<p><strong>2.树莓派蓝牙与手机通信</strong></p>
+<p>这次测试是利用蓝牙的RFCOMM协议，直接用pybluez提供的例程rfcomm-server.py，建立了一个简单的BluetoothSocket Server，然后启动侦听来自其它设备的连接。这时可以用安卓手机去连接树莓派，顺利的话会创立一个连接。接下来树莓派可以接收到手机发来的数据，并将其打印出来。最后如果在手机端断开连接，树莓派server这端会进行异常处理，关闭socket,结束程序。</p>
+<p> 在运行测试例程之前，需要先修改一下bluetooth.service文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;lib&#x2F;systemd&#x2F;system&#x2F;bluetooth.service</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth2.PNG" alt="bluetooth2"></p>
+<p>在<code>ExecStart=/usr/lib/bluetooth/bluetoothd</code>之后添加<code>-C -E</code></p>
+<p>下一行添加<code>ExecStartPost=/usr/bin/sdptool add SP</code></p>
+<p>另外在 rfcomm-server.py原文件第33行添加一行代码：（例程文件可以从<a href="https://github.com/pybluez/pybluez/blob/master/examples" target="_blank" rel="noopener">这里下载</a>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">client_sock.send(data.decode(&#39;utf-8&#39;)) #python3</span><br><span class="line">client_sock.send(data.encode(&#39;utf-8&#39;)) #python2</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth3.PNG" alt="bluetooth3"></p>
+<p>添加这行代码可以实现将接收到的字符再发送回去，这样就是互传字符了。</p>
+<p>接着运行测试例程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 rfcomm-server.py #python3</span><br><span class="line">sudo python rfcomm-server.py #python2</span><br></pre></td></tr></table></figure>
+
+<p> 如果没有问题，这个时候就可以在手机上连接树莓派了。</p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth4.PNG" alt="bluetooth4"></p>
+<p>但我到这一步会报错：</p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth5.PNG" alt="bluetooth5"></p>
+<p>此时查看蓝牙状态，提示Sap driver initialization failed.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service bluetooth status</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：在<code>ExecStart=/usr/lib/bluetooth/bluetoothd</code>后面添加 <code>--noplugin=sap</code></p>
+<p>重新加载systemd：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>重新启动蓝牙：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service bluetooth restart</span><br></pre></td></tr></table></figure>
+
+<p>再查看蓝牙状态，这时Sap应该正常初始化。</p>
+<p>恢复扫描:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo hciconfig hci0 piscan</span><br></pre></td></tr></table></figure>
+
+<p>再运行测试例程，这时应该就成功运行啦。</p>
+<h2 id="手机端操作"><a href="#手机端操作" class="headerlink" title="手机端操作"></a>手机端操作</h2><p>在应用商店下载蓝牙串口SSP</p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth6.PNG" alt="bluetooth6"></p>
+<p>点击右上角连接，再点击右上角搜索树莓派蓝牙</p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth7.PNG" alt="bluetooth7"></p>
+<p>连接成功就可以互发消息啦</p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth8.PNG" alt="bluetooth8"></p>
+<p><img src="/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/bluetooth1.PNG" alt="bluetooth1"></p>
+<p>参考链接:</p>
+<p><a href="http://bbs.eeworld.com.cn/forum.php?mod=viewthread&tid=954851" target="_blank" rel="noopener"><strong>【树莓派3B＋测评】通过pybluez的例程试用蓝牙</strong></a></p>
+<p>[<a href="https://raspberrypi.stackexchange.com/questions/40839/sap-error-on-bluetooth-service-status" target="_blank" rel="noopener">SAP error on bluetooth service status</a>]</p>
+<p><a href="https://superuser.com/questions/1408431/error-bluetooth-with-systemtcl" target="_blank" rel="noopener">Error bluetooth with systemtcl</a></p>
 
     
 
@@ -268,7 +329,7 @@
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="https://aweijx.github.io/2020/04/18/物联网实战（1）/" title="物联网实战（1）" target="_blank">https://aweijx.github.io/2020/04/18/物联网实战（1）/</a>
+          <a href="https://aweijx.github.io/2020/04/20/树莓派蓝牙与手机通信/" title="树莓派蓝牙与手机通信" target="_blank">https://aweijx.github.io/2020/04/20/树莓派蓝牙与手机通信/</a>
         </li>
         
         <li>
@@ -294,7 +355,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BLE</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">树莓派</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">物联网</a>
         		</li>
       		
 		</ul>
@@ -350,7 +415,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://aweijx.github.io/2020/04/18/%E7%89%A9%E8%81%94%E7%BD%91%E5%AE%9E%E6%88%98%EF%BC%881%EF%BC%89/" alt="微信分享二维码"> -->
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://aweijx.github.io/2020/04/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E8%93%9D%E7%89%99%E4%B8%8E%E6%89%8B%E6%9C%BA%E9%80%9A%E4%BF%A1/" alt="微信分享二维码"> -->
     </div>
 </div>
 
@@ -365,15 +430,11 @@
 
 <nav id="article-nav">
   
-    <a href="/2020/04/20/Android-Studio%E8%B6%85%E8%AF%A6%E7%BB%86%E5%AE%89%E6%8E%92%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Android Studio超详细安排配置教程
-        
-      </div>
-    </a>
   
+    <a href="/2020/04/20/hexo%E5%8D%9A%E5%AE%A2%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%EF%BC%88%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hexo博客问题解决（长期更新）</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
